@@ -163,7 +163,7 @@ function App() {
           value={prompt}
           disabled={isLoading}
           resize="vertical"
-          placeholder="Optionally you can write your custom prompt"
+          placeholder="Optionally you can write your custom prompt.&#10;Example: Write a linkedin post about these topics: %topics%"
           rows={5}
         />
 
