@@ -1,0 +1,207 @@
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+  --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+  --secondary-glow: linear-gradient(
+    to bottom right,
+    rgba(1, 65, 255, 0),
+    rgb(192 1 255 / 13%),
+    rgba(175, 1, 255, 0.205)
+  );
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box !important;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+body {
+  background: transparent !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.key {
+  line-height: 1.55;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: rgb(44, 46, 51);
+  color: rgb(193, 194, 197);
+  padding: 3px calc(5px);
+  border-radius: 4px;
+  border-width: 1px 1px 3px;
+  border-style: solid;
+  border-color: rgb(55, 58, 64);
+  border-image: initial;
+}
+
+.container {
+  max-width: 800px;
+  margin: 4rem auto 1rem auto;
+}
+
+.react-tags-wrapper {
+  margin-top: 1rem;
+  overflow: hidden;
+
+  input {
+    background-color: transparent;
+    display: block;
+    margin: 0.5rem 0 0.6rem 0;
+    border-radius: 6px;
+    border: 1px solid #333;
+    color: #fff;
+    width: 100%;
+    padding: 0.5rem;
+
+    &:disabled {
+      background-color: #111;
+      border-color: #333;
+      cursor: not-allowed;
+    }
+  }
+
+  .ReactTags__selected {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+
+    > span {
+      flex: 0 1 auto;
+      display: flex;
+      align-items: center;
+      border-radius: 6px;
+      color: rgb(182, 182, 182);
+      background-color: rgba(114, 114, 114, 0.479);
+      border: 1px solid #333;
+      width: auto;
+      height: auto;
+      padding: 2px 5px;
+
+      .ReactTags__remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.637);
+        border-radius: 999px;
+        border: 1px solid #333;
+        margin-left: 5px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .ReactTags__suggestions {
+    max-height: 200px;
+    overflow-y: auto;
+
+    ul {
+      padding: 0;
+
+      li {
+        padding: 5px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgba(51, 51, 51, 0.479);
+        }
+
+        &::before,
+        &::after {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+
+.text-gradient {
+  background: #00c6ff;
+  background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);
+  background: linear-gradient(to right, #0072ff, #00c6ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.card-gradient {
+  --border-radius: 4px;
+  --border-width: 1px;
+  border: 0;
+  border-radius: 4px !important;
+  z-index: 2;
+  position: relative;
+
+  &::after {
+    --m-i: linear-gradient(#000, #000);
+    --m-o: content-box, padding-box;
+    -webkit-animation: rotate-hue 0.9s linear infinite;
+    animation: rotate-hue 0.9s linear infinite;
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+    background-image: conic-gradient(
+      #488cfb,
+      #29dbbc,
+      #ddf505,
+      #ff9f0e,
+      #e440bb,
+      #655adc,
+      #488cfb
+    );
+    border-radius: var(--border-radius);
+    content: "";
+    -webkit-filter: hue-rotate(0);
+    filter: hue-rotate(0);
+    height: 100%;
+    left: 0;
+    -webkit-mask-clip: var(--m-o);
+    mask-clip: var(--m-o);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    -webkit-mask-image: var(--m-i), var(--m-i);
+    mask-image: var(--m-i), var(--m-i);
+    -webkit-mask-origin: var(--m-o);
+    mask-origin: var(--m-o);
+    padding: var(--border-width);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    animation-play-state: running;
+  }
+}
+
+.title {
+  font-family: "Archivo Black", Impact, Haettenschweiler, "Arial Narrow Bold",
+    sans-serif;
+  position: relative;
+  &::before {
+    background: var(--primary-glow);
+    width: 500px;
+    height: 300px;
+    z-index: -1;
+    content: "";
+    left: 50%;
+    transform: translateX(-50%);
+    top: -4rem;
+    position: absolute;
+    filter: blur(45px);
+  }
+}
+
+@keyframes rotate-hue {
+  to {
+    filter: hue-rotate(1turn);
+  }
+}
