@@ -117,7 +117,7 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <img
         src="https://uploads-ssl.webflow.com/60f17076d87a6f380d814d8d/617d26ca7de75b457a690c6f_Glow-p-500.png"
         loading="lazy"
