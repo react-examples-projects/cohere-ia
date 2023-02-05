@@ -1,16 +1,3 @@
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
-  --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-  --secondary-glow: linear-gradient(
-    to bottom right,
-    rgba(1, 65, 255, 0),
-    rgb(192 1 255 / 13%),
-    rgba(175, 1, 255, 0.205)
-  );
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -19,11 +6,18 @@
     "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
+html {
+  height: 100%;
+}
 
 body {
-  background: transparent !important;
+  background-image: url(https://hacktoberfest.com/_next/static/media/grain-dark.9d5983e6.png) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    min-height: 100%;
 }
 
 .key {
@@ -42,9 +36,10 @@ body {
   border-image: initial;
 }
 
+
 .container {
-  max-width: 800px;
-  margin: 4rem auto 1rem auto;
+  max-width: 1000px;
+  margin: 0 auto 1rem auto;
 }
 
 .react-tags-wrapper {
@@ -182,22 +177,27 @@ body {
   }
 }
 
+.purple-glowing {
+  position: absolute;
+  left: 0%;
+  top: -9rem;
+  right: 0%;
+  bottom: auto;
+  width: 100%;
+  height: auto;
+  max-width: 90%;
+  min-height: 600px;
+  margin-right: auto;
+  margin-left: auto;
+  filter: blur(3rem);
+}
+
 .title {
   font-family: "Archivo Black", Impact, Haettenschweiler, "Arial Narrow Bold",
     sans-serif;
+  line-height: 1.2;
   position: relative;
-  &::before {
-    background: var(--primary-glow);
-    width: 500px;
-    height: 300px;
-    z-index: -1;
-    content: "";
-    left: 50%;
-    transform: translateX(-50%);
-    top: -4rem;
-    position: absolute;
-    filter: blur(45px);
-  }
+  font-size: 4rem;
 }
 
 @keyframes rotate-hue {

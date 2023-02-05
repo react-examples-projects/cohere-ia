@@ -9,7 +9,8 @@ import {
   useToasts,
 } from "@geist-ui/core";
 import { WithContext as ReactTags } from "react-tag-input";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { FiChevronRight, FiUpload, FiImage } from "react-icons/fi";
 import { isNotValidFileType, imageToBase64, generateId } from "./helpers/utils";
 import getPrediction from "./helpers/api";
 
@@ -38,7 +39,9 @@ function App() {
   const [prediction, setPrediction] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [filename, setFilename] = useState("");
   const [errorTagsLength, setErrorTagsLength] = useState(false);
+  const ref = useRef(null);
   const [tags, setTags] = useState([
     {
       id: generateId(),
@@ -58,6 +61,8 @@ function App() {
 
   const handleAddition = (tag) => setTags([...tags, tag]);
 
+  const uploadFile = () => ref.current?.click();
+
   const handleDrag = (tag, currPos, newPos) => {
     const newTags = tags.slice();
     newTags.splice(currPos, 1);
@@ -75,6 +80,7 @@ function App() {
       return;
     }
 
+    setFilename(img.name);
     const url = await imageToBase64(img);
     setImgUrl(url);
   };
@@ -112,14 +118,21 @@ function App() {
 
   return (
     <div className="container">
-      <Text className="mb-2 text-center text-gradient title" h1>
-        Create your short posts for yours social medias
+      <img
+        src="https://uploads-ssl.webflow.com/60f17076d87a6f380d814d8d/617d26ca7de75b457a690c6f_Glow-p-500.png"
+        loading="lazy"
+        alt="Glow"
+        className="purple-glowing"
+      ></img>
+      <Text className="mb-2 text-center title" h1>
+        Create short texts for your social networks
       </Text>
       <Text
-        className="text-center text-muted mb-1"
-        style={{ fontSize: "20px" }}
+        className="text-center text-muted mb-1 mx-auto"
+        style={{ fontSize: "20px", maxWidth: "600px" }}
       >
-        You can generate text using cohere ia recognition.
+        Generate textual content for your posts on your social networks or stop
+        the AI from offering you a random result.
       </Text>
 
       <main style={{ maxWidth: "600px" }} className="mx-auto">
@@ -153,7 +166,7 @@ function App() {
             disabled: IS_REACHED_MAX_TAGS,
           }}
         />
-        <label className="mb-3 d-block">
+        <label className="my-3 d-block">
           You can use <span className="key">%topics%</span> variable to add the
           tags to your prompt
         </label>
@@ -168,15 +181,26 @@ function App() {
         />
 
         <Card className="mt-3 d-flex">
-          <label htmlFor="file">
+          <label htmlFor="file" className="d-block mb-2">
             You can upload a preview image for your post
           </label>
+          {filename && (
+            <Text>
+              <FiImage className="me-2" />
+              {filename}
+            </Text>
+          )}
+
+          <Button onClick={uploadFile} iconRight={<FiUpload />}>
+            Upload image
+          </Button>
+
           <Input
             htmlType="file"
             id="file"
-            className="mt-2"
+            ref={ref}
+            className="d-none"
             accept="image/png, image/gif, image/jpeg"
-            width="100%"
             onChange={onChangeFile}
           />
         </Card>
@@ -187,6 +211,7 @@ function App() {
           onClick={createPrediction}
           disabled={isLoading}
           loading={isLoading}
+          iconRight={<FiChevronRight />}
         >
           Generate
         </Button>
