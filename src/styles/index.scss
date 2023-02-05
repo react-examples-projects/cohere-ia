@@ -190,6 +190,8 @@ body {
   margin-right: auto;
   margin-left: auto;
   filter: blur(3rem);
+  user-select: none;
+  pointer-events: none;
 }
 
 .title {

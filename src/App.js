@@ -124,18 +124,22 @@ function App() {
         alt="Glow"
         className="purple-glowing"
       ></img>
-      <Text className="mb-2 text-center title" h1>
-        Create short texts for your social networks
+      <Text
+        className="mb-2 text-center title position-relative"
+        style={{ zIndex: 2 }}
+        h1
+      >
+        Generate short texts for your social networks
       </Text>
       <Text
-        className="text-center text-muted mb-1 mx-auto"
-        style={{ fontSize: "20px", maxWidth: "600px" }}
+        className="text-center text-muted mb-1 mx-auto position-relative"
+        style={{ fontSize: "20px", maxWidth: "600px", zIndex: 2 }}
       >
-        Generate textual content for your posts on your social networks or stop
+        Generate textual content for your posts on your social networks or let
         the AI from offering you a random result.
       </Text>
 
-      <main style={{ maxWidth: "600px" }} className="mx-auto">
+      <main style={{ maxWidth: "600px", zIndex: 2 }} className="mx-auto">
         {errorTagsLength && (
           <Note type="error" className="my-2">
             You must have almost one tag created
