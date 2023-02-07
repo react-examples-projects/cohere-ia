@@ -13,7 +13,7 @@ export default async function getPrediction(prompt) {
     data: {
       model: "command-xlarge-nightly",
       prompt,
-      max_tokens: 100,
+      max_tokens: 50,
       temperature: 0.8,
       k: 0,
       p: 0.75,
@@ -24,4 +24,21 @@ export default async function getPrediction(prompt) {
   };
   const res = await axios.request(options);
   return res.data?.generations[0].text;
+}
+
+export async function toSpanish(txt) {
+  const res = await axios.get(`https://api.mymemory.translated.net/get`, {
+    params: {
+      q: txt,
+      langpair: "en-GB|es-ES",
+    },
+  });
+
+  if (res.status !== 200) {
+    return alert("Translation failed!");
+  }
+
+  const data = res.data;
+  const translation = data?.responseData?.translatedText;
+  return translation;
 }

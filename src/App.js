@@ -9,10 +9,17 @@ import {
   useToasts,
 } from "@geist-ui/core";
 import { WithContext as ReactTags } from "react-tag-input";
-import { useRef, useState } from "react";
-import { FiChevronRight, FiUpload, FiImage } from "react-icons/fi";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  FiChevronRight,
+  FiUpload,
+  FiImage,
+  FiEye,
+  FiEyeOff,
+} from "react-icons/fi";
 import { isNotValidFileType, imageToBase64, generateId } from "./helpers/utils";
-import getPrediction from "./helpers/api";
+import getPrediction, { toSpanish } from "./helpers/api";
+import useToggle from "./hook/useToggle";
 
 const KeyCodes = {
   comma: 188,
@@ -34,9 +41,11 @@ function getRandomPrompt(topics) {
 }
 
 function App() {
+  const [isVisibleTranslation, toggleVisibleTranslation] = useToggle(true);
   const [prompt, setPrompt] = useState("");
   const [selectedPrompt, setSelectedPrompt] = useState("");
   const [prediction, setPrediction] = useState("");
+  const [translatedPrompt, setTranslatedPrompt] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filename, setFilename] = useState("");
@@ -92,6 +101,7 @@ function App() {
     }
 
     try {
+      setTranslatedPrompt("") // important
       setError(null);
       setErrorTagsLength(false);
       setLoading(true);
@@ -116,6 +126,31 @@ function App() {
     }
   };
 
+  const translatePrompt = useCallback(async () => {
+    try {
+      setToast({
+        text: "Translating result ...",
+        type: "success",
+      });
+      const translation = await toSpanish(prediction);
+      setTranslatedPrompt(translation);
+      setToast({
+        text: "Result translated!",
+        type: "success",
+      });
+    } catch (err) {
+      const desc = err.response?.data?.data?.error || err.message || err;
+      setError(desc);
+    }
+  }, [prediction]);
+
+  useEffect(() => {
+    if (!prediction) return;
+
+    window.scrollTo(0, document.body.scrollHeight);
+    translatePrompt();
+  }, [prediction, translatePrompt]);
+
   return (
     <div className="container mt-5">
       <img
@@ -123,7 +158,7 @@ function App() {
         loading="lazy"
         alt="Glow"
         className="purple-glowing"
-      ></img>
+      />
       <Text
         className="mb-2 text-center title position-relative"
         style={{ zIndex: 2 }}
@@ -212,7 +247,9 @@ function App() {
         <Button
           type="success-light"
           className="my-3"
-          onClick={createPrediction}
+          onClick={
+            isLoading ? null : createPrediction
+          } /* Stop multiple fetch to apis */
           disabled={isLoading}
           loading={isLoading}
           iconRight={<FiChevronRight />}
@@ -242,7 +279,34 @@ function App() {
                   </time>
                 </Text>
               </div>
-              <p style={{ wordWrap: "break-word" }}>{prediction}</p>
+
+              <Text style={{ wordWrap: "break-word" }}>
+                {isVisibleTranslation && translatedPrompt
+                  ? translatedPrompt
+                  : prediction}
+              </Text>
+
+              {translatedPrompt && (
+                <Text
+                  type="success"
+                  style={{ textDecoration: "underline", cursor: "pointer" }}
+                  className="d-flex align-items-center my-0 mb-3"
+                  onClick={toggleVisibleTranslation}
+                >
+                  {isVisibleTranslation ? (
+                    <>
+                      <FiEye />
+                      <Text className="ms-2 my-0">See original</Text>
+                    </>
+                  ) : (
+                    <>
+                      <FiEyeOff />
+                      <Text className="ms-2 my-0">See translation</Text>
+                    </>
+                  )}
+                </Text>
+              )}
+
               <img
                 src={
                   imgUrl ||
@@ -252,6 +316,7 @@ function App() {
                 title="Output post"
                 className="img-fluid rounded-3"
               />
+
               <div className="d-flex align-items-center gap-1 flex-wrap">
                 {tags.map(({ text, id }) => (
                   <Text
