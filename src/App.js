@@ -101,7 +101,7 @@ function App() {
     }
 
     try {
-      setTranslatedPrompt("") // important
+      setTranslatedPrompt(""); // important for old values, if there's a error show the current prediction
       setError(null);
       setErrorTagsLength(false);
       setLoading(true);
@@ -139,10 +139,10 @@ function App() {
         type: "success",
       });
     } catch (err) {
-      const desc = err.response?.data?.data?.error || err.message || err;
+      const desc = err.response?.data?.responseDetails || err.message || err;
       setError(desc);
     }
-  }, [prediction]);
+  }, [prediction]); 
 
   useEffect(() => {
     if (!prediction) return;
